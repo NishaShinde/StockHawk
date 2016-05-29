@@ -8,9 +8,12 @@
     <string name="input_prefill" translatable="false"></string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="title_activity_stock_graph" translatable="false">StockGraphActivity</string>
-
+    <string name="okLabel">OK</string>
+    <string name="cancelLabel">Cancel</string>
+    <string name="exitMsg">Exit app?</string>
     <string name="empty_text">Nothing to display</string>
-    <string name="invalid_symbol">Invalid quote name</string>
+    <string name="invalid_symbol">Invalid stock name</string>
+    <string name="stockAlreadyExistMsg">This stock already exists.</string>
 
     <!--Stock graph screen constants-->
     <string name="open">Open</string>
