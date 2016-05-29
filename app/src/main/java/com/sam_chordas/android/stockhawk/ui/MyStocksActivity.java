@@ -45,13 +45,8 @@ import com.sam_chordas.android.stockhawk.widget.WidgetProvider;
 import java.io.IOException;
 
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-  private static final String LOG_TAG = MyStocksActivity.class.getSimpleName();
   public static final String EXTRA_SYMBOL = "extra_symbol";
-
-  /**
-   * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-   */
-
+  public static final String EXTRA_ISGRAPHDRAWN = "extra_isGraphDrawn";
   /**
    * Used to store the last screen title. For use in {@link #restoreActionBar()}.
    */
@@ -64,7 +59,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Cursor mCursor;
   boolean isConnected;
   private ProgressDialog progressDialog;
-  public static final String EXTRA_ISGRAPHDRAWN = "extra_isGraphDrawn";
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +78,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    getSupportActionBar().setTitle("StockHawk");
+    getSupportActionBar().setTitle(R.string.app_name);
 
     if(isNetwrokAvailable(this.getApplicationContext())){
      plotGraphFromWidgetClick();
@@ -95,7 +90,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       builder.setIcon(android.R.drawable.ic_dialog_info);
      // builder.show();
 
-      builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+      builder.setPositiveButton(R.string.okLabel, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
           dialog.cancel();
@@ -156,10 +151,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       // in the DB and proceed accordingly
                       Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                               new String[] { QuoteColumns.SYMBOL }, QuoteColumns.SYMBOL + "= ?",
-                              new String[] { input.toString() }, null);
+                              new String[] { input.toString().toUpperCase() }, null);
                       if (c.getCount() != 0) {
                         Toast toast =
-                                Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                                Toast.makeText(MyStocksActivity.this, R.string.stockAlreadyExistMsg,
                                         Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                         toast.show();
@@ -167,7 +162,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       } else {
                         // Add the stock to DB
                         mServiceIntent.putExtra("tag", "add");
-                        mServiceIntent.putExtra("symbol", input.toString());
+                        mServiceIntent.putExtra("symbol",  input.toString().toUpperCase());
                         startService(mServiceIntent);
                       }
                     }
@@ -340,8 +335,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
   protected void dialogOnBackPress() {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setMessage("Exit app?");
-    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+    builder.setMessage(R.string.exitMsg);
+    builder.setPositiveButton(R.string.okLabel, new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -351,7 +346,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
       }
     });
-    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+    builder.setNegativeButton(R.string.cancelLabel, new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
         dialog.dismiss();
